@@ -3,35 +3,7 @@ title: "README"
 output: github_document
 ---
 
-```{r setup}
-library(tidyverse)
-library(ggthemes)
-library(ggplot2)    
-library(rio)
-library(infer)
-set.seed(1212)
-N=1000
-R=rnorm(N, mean=0.4, sd=0.05)
-M=runif(5,350,400)
-L=runif(5,3000,4000) 
-S=L*R #收入
-INCOME=M*S
-Cpl=runif(5,8,10)
-H=20000
-Expenses=Cpl*L+H #成本
-Profit=INCOME-Expenses
-data <- read.csv("Data/cpl_and_conversion.csv")
-cor_matr = cor(data) #相关矩阵
-cor_matr
-data %>% 
-ggplot(aes(cost_per_lead, conversion_rate)) +
-  geom_line(size = 1, color = "grey30") #数据实际分布图
 
-test_mod <- lm(conversion_rate ~ cost_per_lead, data = data) #线性预测？
-test_mod
-predict(test_mod,newdata=data.frame(cost_per_lead=9.8),interval="confidence")
-knitr::opts_chunk$set(echo = FALSE)
-```
 
 
 蒙特卡洛模拟可以帮助分析在商业上一些复杂的场景, 包括了衡量风险以及计算某项目在特定条件下可产生的收益. 我们将通过一个简化的例子表现蒙特卡洛模拟的应用.
@@ -49,7 +21,24 @@ Often, Monte Carlo simulation can come in handy to calculate risk or evaluate in
           =单毛利 x 栗子数 x 转化率-（栗子数 x 单栗子成本 + C）
           =栗子数 x (单毛利 x 转化率 - 单栗子成本) - C
        服从正太分布
-
+```{r setup}
+library(tidyverse)
+library(ggthemes)
+library(ggplot2)    
+library(rio)
+library(infer)
+set.seed(1212)
+N=1000
+R=rnorm(N, mean=0.4, sd=0.05)
+M=runif(5,350,400)
+L=runif(5,3000,4000) 
+S=L*R #收入
+INCOME=M*S
+Cpl=runif(5,8,10)
+H=20000
+Expenses=Cpl*L+H #成本
+Profit=INCOME-Expenses
+```
 
 2. 如果我们设置一个月的**利润目标为10万元**, **达成目标的概率**是多少? **亏损风险** (利润小于0的概率) 是多少?
 
@@ -58,7 +47,19 @@ Often, Monte Carlo simulation can come in handy to calculate risk or evaluate in
 
 4. 经过第一轮的探索, 你与业务分享你的结果. 业务发现你的模拟出现了严重的漏洞. 以他们的业务经验, **单个栗子的成本与其转化率是强关联关系的**. 你提取了以往投放的数据 (见附带表格 csv), 发现果真如此. 于是, 你更新了你的模型. **请以新模型回答以上3点问题**.
 
+```{r setup1}
+data <- read.csv("Data/cpl_and_conversion.csv")
+cor_matr = cor(data) #相关矩阵
+cor_matr
+data %>% 
+ggplot(aes(cost_per_lead, conversion_rate)) +
+  geom_line(size = 1, color = "grey30") #数据实际分布图
 
+test_mod <- lm(conversion_rate ~ cost_per_lead, data = data) #线性预测？
+test_mod
+predict(test_mod,newdata=data.frame(cost_per_lead=9.8),interval="confidence")
+knitr::opts_chunk$set(echo = FALSE)
+```
 
 5. 如果业务提出一个产品方案, 在**增加固定成本百分之25至30**的前提下, 每天的**栗子数量可以提升百分之15至25**. 请问你会如何评估该方案? 
 
