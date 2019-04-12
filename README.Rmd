@@ -17,9 +17,8 @@ Often, Monte Carlo simulation can come in handy to calculate risk or evaluate in
 你作为商业分析组的一员, 将通过数据模拟优先回答以下问题:
 
 1. 以【月】为单位的利润是怎么样的一个**分布**? 以百分之**95的置信度**而言, 利润在什么**范围区间**? 
-解答：利润=收入-开销
-          =单毛利 x 栗子数 x 转化率-（栗子数 x 单栗子成本 + C）
-          =栗子数 x (单毛利 x 转化率 - 单栗子成本) - C
+
+解答:
        服从正太分布
 ```{r setup}
 library(tidyverse)
